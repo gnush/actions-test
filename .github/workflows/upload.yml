@@ -51,12 +51,9 @@ jobs:
       #    files: |
       #      ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk
       #      ${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - name: Create Release
+        uses: ncipollo/release-action@v1.16.0
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: "upstream"
-          files: |
-            ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk
-            ${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab
+          artifacts: "${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk,${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab"
+          allowUpdates: true
+          tag: latest
