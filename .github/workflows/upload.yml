@@ -3,15 +3,15 @@ name: upload
 on:
   workflow_dispatch:
 
-  jobs:
-    upload-test:
-      runs-on: ubuntu-latest
-      timeout-minutes: 15
+jobs:
+  upload-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
 
-      steps:
-        - run: mkdir -p path/to
-        - run: echo bar > path/to/foo
-        - uses: actions/upload-artifact@v4
-          with:
-            name: foobar
-            path: path/to/foo
+    steps:
+      - run: mkdir -p path/to
+      - run: echo bar > path/to/foo
+      - uses: actions/upload-artifact@v4
+        with:
+          name: foobar
+          path: path/to/foo
