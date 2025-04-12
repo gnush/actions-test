@@ -31,14 +31,14 @@ jobs:
           cache: gradle
       - name: gradlew exec
         run: chmod +x gradlew
-      - name: assemble release apk
-        run: ./gradlew assembleRelease
+      #- name: assemble release apk
+      #  run: ./gradlew assembleRelease
       - name: bundle release
         run: ./gradlew bundleRelease
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.basename }} - apk
-          path: ${{ env.module }}/${{ env.buildpath }}/apk/release/
+      #- uses: actions/upload-artifact@v4
+      #  with:
+      #    name: ${{ env.basename }} - apk
+      #    path: ${{ env.module }}/${{ env.buildpath }}/apk/release/
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.basename }} - abb
@@ -54,6 +54,6 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1.16.0
         with:
-          artifacts: "${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk,${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab"
+          artifacts: "app/build/outputs/bundle/release/app-release.aab"
           allowUpdates: true
           tag: latest
