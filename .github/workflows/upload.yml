@@ -5,7 +5,18 @@ env:
   buildpath: build/outputs
   basename: foobar
 
-on: push
+on: push  # cannot combine like below, doesn't trigger at all, use two workflows. branch type to integrate in normal commit push ci, tag type for release versions
+  #push:
+  #  branches:
+  #    - "master"
+  #  tags:
+  #    - "v*"
+  #workflow_run:
+  #  workflows: [ "build" ]
+  #  branches: [ "master" ]
+  #  types:
+  #    - completed
+  #workflow_dispatch:
 
 jobs:
   upload-artifacts:
@@ -26,6 +37,7 @@ jobs:
         run: ./gradlew assembleRelease
       - name: bundle release
         run: ./gradlew bundleRelease
+      # may remove artifact upload, or keep for access to intermediate builds?
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.basename }} - apk
