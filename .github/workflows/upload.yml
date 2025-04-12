@@ -6,12 +6,14 @@ env:
   basename: foobar
 
 on:
-  #push:
-  #  workflow_run:
-  #    workflows: [ "build" ]
-  #    branches: [ "master" ]
-  #    types:
-  #      - completed
+
+  push:
+    branches: [ "master" ]
+  #workflow_run:
+  #  workflows: [ "build" ]
+  #  branches: [ "master" ]
+  #  types:
+  #    - completed
   workflow_dispatch:
 
 jobs:
@@ -49,9 +51,11 @@ jobs:
       #    files: |
       #      ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk
       #      ${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab
-      - name: Upload To Github Release
-        uses: xresloader/upload-to-github-release@v1.6.0
+      - uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          file: ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk;${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab
-          draft: true
-          default_release_name: latest
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "upstream"
+          files: |
+            ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk
+            ${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab
