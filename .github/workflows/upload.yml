@@ -1,12 +1,23 @@
 name: upload
 
+env:
+  module: app
+  buildpath: build/outputs
+  basename: foobar
+
 on:
+  #push:
+  #  workflow_run:
+  #    workflows: [ "build" ]
+  #    branches: [ "master" ]
+  #    types:
+  #      - completed
   workflow_dispatch:
 
 jobs:
-  upload-test:
+  upload-artifacts:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v4
@@ -20,15 +31,13 @@ jobs:
         run: chmod +x gradlew
       - name: assemble release apk
         run: ./gradlew assembleRelease
-      - uses: actions/upload-artifact@v4
-        with:
-          name: app.apk
-          path: app/build/outputs/apk/release/app-release-unsigned.apk
-          compression-level: 0
       - name: bundle release
         run: ./gradlew bundleRelease
       - uses: actions/upload-artifact@v4
         with:
-          name: app.aab
-          path: app/build/outputs/bundle/release/app-release.aab
-          compression-level: 0
+          name: ${{ env.basename }} - apk
+          path: ${{ env.module }}/${{ env.buildpath }}/apk/release/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.basename }} - abb
+          path: ${{ env.module }}/${{ env.buildpath }}/bundle/release/
