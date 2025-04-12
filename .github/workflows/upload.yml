@@ -31,29 +31,23 @@ jobs:
           cache: gradle
       - name: gradlew exec
         run: chmod +x gradlew
-      #- name: assemble release apk
-      #  run: ./gradlew assembleRelease
+      - name: assemble release apk
+        run: ./gradlew assembleRelease
       - name: bundle release
         run: ./gradlew bundleRelease
-      #- uses: actions/upload-artifact@v4
-      #  with:
-      #    name: ${{ env.basename }} - apk
-      #    path: ${{ env.module }}/${{ env.buildpath }}/apk/release/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.basename }} - apk
+          path: ${{ env.module }}/${{ env.buildpath }}/apk/release/
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.basename }} - abb
           path: ${{ env.module }}/${{ env.buildpath }}/bundle/release/
       # only tagged commits
-      #- name: Release
-      #  uses: softprops/action-gh-release@v2.2.1
-      #  if: github.ref_type == 'tag'
-      #  with:
-      #    files: |
-      #      ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk
-      #      ${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab
-      - name: Create Release
-        uses: ncipollo/release-action@v1.16.0
+      - name: Release
+        uses: softprops/action-gh-release@v2.2.1
+        if: github.ref_type == 'tag'
         with:
-          artifacts: "app/build/outputs/bundle/release/app-release.aab"
-          allowUpdates: true
-          tag: latest
+          files: |
+            ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk
+            ${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab
