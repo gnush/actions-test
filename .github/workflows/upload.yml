@@ -22,11 +22,13 @@ jobs:
         run: ./gradlew assembleRelease
       - uses: actions/upload-artifact@v4
         with:
-          name: app-apk
+          name: app.apk
           path: app/build/outputs/apk/release
+          compression-level: 0
       - name: bundle release
         run: ./gradlew bundleRelease
       - uses: actions/upload-artifact@v4
         with:
-          name: app-bundle
+          name: app.aab
           path: app/build/outputs/bundle/release
+          compression-level: 0
