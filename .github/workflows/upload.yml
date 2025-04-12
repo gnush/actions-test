@@ -44,7 +44,7 @@ jobs:
         with:
           name: ${{ env.basename }} - abb
           path: ${{ env.module }}/${{ env.buildpath }}/bundle/release/
-      # only tagged commits
+      # only tag pushes
       - name: Release
         uses: softprops/action-gh-release@v2.2.1
         if: github.ref_type == 'tag'
@@ -52,3 +52,4 @@ jobs:
           files: |
             ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk
             ${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab
+          token: ${{ secrets.RELEASE }}
