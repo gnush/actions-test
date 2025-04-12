@@ -8,6 +8,8 @@ env:
 on:
 
   push:
+    branches:
+      - "master"
     tags:
       - "v*"
   #workflow_run:
@@ -44,7 +46,7 @@ jobs:
         with:
           name: ${{ env.basename }} - abb
           path: ${{ env.module }}/${{ env.buildpath }}/bundle/release/
-      # only tag pushes
+      # only tag pushes (git tag -a TAG -m "tag details")
       - name: Release
         uses: softprops/action-gh-release@v2.2.1
         if: github.ref_type == 'tag'
@@ -53,3 +55,15 @@ jobs:
             ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk
             ${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab
           token: ${{ secrets.RELEASE }}
+      # release "latest" (or whatever to call it) on commit pushes
+      - name: Release latest
+        uses: marvinpinto/action-automatic-releases@v1.2.1
+        if: github.ref_type == 'branch'
+        with:
+          repo_token: "${{ secrets.RELEASE }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk
+            ${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab
