@@ -5,19 +5,7 @@ env:
   buildpath: build/outputs
   basename: foobar
 
-on:
-
-  push:
-    branches:
-      - "master"
-    tags:
-      - "v*"
-  #workflow_run:
-  #  workflows: [ "build" ]
-  #  branches: [ "master" ]
-  #  types:
-  #    - completed
-  workflow_dispatch:
+on: push
 
 jobs:
   upload-artifacts:
@@ -46,7 +34,9 @@ jobs:
         with:
           name: ${{ env.basename }} - abb
           path: ${{ env.module }}/${{ env.buildpath }}/bundle/release/
-      # only tag pushes (git tag -a TAG -m "tag details")
+      # only works on tag pushes
+      # git tag -a TAG -m "tag details"
+      # git push --follow-tags  (or git push origin tag for single tag)
       - name: Release
         uses: softprops/action-gh-release@v2.2.1
         if: github.ref_type == 'tag'
