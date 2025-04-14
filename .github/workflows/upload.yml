@@ -24,48 +24,49 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v4
-      - name: setup jdk 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: gradle
-      - name: gradlew exec
-        run: chmod +x gradlew
-      - name: assemble release apk
-        run: ./gradlew assembleRelease
-      - name: bundle release
-        run: ./gradlew bundleRelease
-      # may remove artifact upload, or keep for access to intermediate builds?
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.basename }} - apk
-          path: ${{ env.module }}/${{ env.buildpath }}/apk/release/
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.basename }} - abb
-          path: ${{ env.module }}/${{ env.buildpath }}/bundle/release/
-      # only works on tag pushes
-      # git tag -a TAG -m "tag details"
-      # git push --follow-tags  (or git push origin tag for single tag)
-      - name: Release
-        uses: softprops/action-gh-release@v2.2.1
-        if: github.ref_type == 'tag'
-        with:
-          files: |
-            ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk
-            ${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab
-          token: ${{ secrets.RELEASE }}
-      # release "latest" (or whatever to call it) on commit pushes
-      - name: Release latest
-        uses: marvinpinto/action-automatic-releases@v1.2.1
-        if: github.ref_type == 'branch'
-        with:
-          repo_token: "${{ secrets.RELEASE }}"
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: "Development Build"
-          files: |
-            ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk
-            ${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab
+      - run: echo foo
+      #- uses: actions/checkout@v4
+      #- name: setup jdk 17
+      #  uses: actions/setup-java@v4
+      #  with:
+      #    java-version: '17'
+      #    distribution: 'temurin'
+      #    cache: gradle
+      #- name: gradlew exec
+      #  run: chmod +x gradlew
+      #- name: assemble release apk
+      #  run: ./gradlew assembleRelease
+      #- name: bundle release
+      #  run: ./gradlew bundleRelease
+      ## may remove artifact upload, or keep for access to intermediate builds?
+      #- uses: actions/upload-artifact@v4
+      #  with:
+      #    name: ${{ env.basename }} - apk
+      #    path: ${{ env.module }}/${{ env.buildpath }}/apk/release/
+      #- uses: actions/upload-artifact@v4
+      #  with:
+      #    name: ${{ env.basename }} - abb
+      #    path: ${{ env.module }}/${{ env.buildpath }}/bundle/release/
+      ## only works on tag pushes
+      ## git tag -a TAG -m "tag details"
+      ## git push --follow-tags  (or git push origin tag for single tag)
+      #- name: Release
+      #  uses: softprops/action-gh-release@v2.2.1
+      #  if: github.ref_type == 'tag'
+      #  with:
+      #    files: |
+      #      ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk
+      #      ${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab
+      #    token: ${{ secrets.RELEASE }}
+      ## release "latest" (or whatever to call it) on commit pushes
+      #- name: Release latest
+      #  uses: marvinpinto/action-automatic-releases@v1.2.1
+      #  if: github.ref_type == 'branch'
+      #  with:
+      #    repo_token: "${{ secrets.RELEASE }}"
+      #    automatic_release_tag: "latest"
+      #    prerelease: true
+      #    title: "Development Build"
+      #    files: |
+      #      ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk
+      #      ${{ env.module }}/${{ env.buildpath }}/bundle/release/*.aab
