@@ -51,10 +51,7 @@ jobs:
       #    name: ${{ env.basename }}-${{ env.today }}-aab
       #    path: ${{ env.module }}/${{ env.buildpath }}/bundle/release/
       - name: Rename apk
-        run: |
-          mv
-            ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk
-            ${{ env.module }}/${{ env.buildpath }}/apk/release/${{ env.basename }}-${{ env.today }}.apk
+        run: mv ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk ${{ env.module }}/${{ env.buildpath }}/apk/release/${{ env.basename }}-${{ env.today }}.apk
       - name: Release dev build
         uses: marvinpinto/action-automatic-releases@v1.2.1
         if: github.ref_type == 'branch'

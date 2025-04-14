@@ -33,10 +33,7 @@ jobs:
       - name: Build release apk
         run: ./gradlew ${{ env.module }}:assembleRelease
       - name: Rename apk
-        run: |
-          mv
-            ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk
-            ${{ env.module }}/${{ env.buildpath }}/apk/release/${{ env.basename }}-${{ env.today }}.apk
+        run: mv ${{ env.module }}/${{ env.buildpath }}/apk/release/*.apk ${{ env.module }}/${{ env.buildpath }}/apk/release/${{ env.basename }}-${{ env.today }}.apk
       - name: Github Release
         uses: softprops/action-gh-release@v2.2.1
         if: github.ref_type == 'tag'
